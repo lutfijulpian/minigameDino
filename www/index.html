@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Game Dino Run</title>
+    <link rel="stylesheet" type="text/css" href="css/gamestyle.css">
+</head>
+<body>
+
+    <h2>Dino Run</h2>
+    <h3>Score : <span id="score">0</span></h3>
+    <div id="board" style="background-position:0px;">
+        <div id="area">
+            <div id="dino"></div>
+            <div id="box" style="margin-left:600px;"></div>
+        </div>
+    </div>
+    
+
+    <script type="text/javascript">
+        var isMoving = true;
+       function setBackgroundMoving() {
+            if(isMoving == true){
+                setTimeout(function() {
+
+                    // bacground berjalan
+                    var bg = document.getElementById('board');
+                    bg.style.backgroundPosition = (parseInt(bg.style.
+                        backgroundPosition.replace('px', ''))-1) + 'px';
+                    
+                    // update live score
+                    document.getElementById('score').innerHTML =
+                    parseInt(document.getElementById('score').innerHTML) +1;
+
+                // pangging fungsinya terus menerus
+                setBackgroundMoving();
+                },3);
+            }
+       }
+       // inisialisasi fungsi bacround berjalan
+       setBackgroundMoving();
+
+       function setBoxMoving(){
+            var box = document.getElementById('box'),
+                dino = document.getElementById('dino');
+
+                setTimeout(function() {
+    
+                box.style.marginLeft = (parseInt(box.style.marginLeft.replace('px', '')) -1) + 'px';
+
+                if(parseInt(box.style.marginLeft.replace('px', '')) < -100){
+                    box.style.marginLeft = "600px";
+                }
+
+                if(dino.offsetTop + 50 >= box.offsetTop &&
+                dino.offsetLeft + 50 >= box.offsetLeft &&
+                dino.offsetTop + 50 <= box.offsetTop + 50 &&
+                dino.offsetLeft <= box.offsetLeft + 50) {
+                alert('Game Over, score anda : ' + document.getElementById('score').innerHTML);
+                dino.setAttribute('class','freeze');
+                isMoving = false; 
+                }else{
+
+                // pangging fungsinya terus menerus
+                setBoxMoving();
+                }
+
+                
+                },5);
+       }
+       // inisialisasi box bergerak
+       setBoxMoving();
+
+
+
+
+       window.addEventListener('keyup', function(e) {
+
+        // untuk mendeteksi tombol spasi
+            if(e.keyCode == 32) {
+                // setting dino nya loncat
+                document.getElementById('dino').style.marginTop = "30px";
+                document.getElementById('dino').setAttribute('class', 'freeze');   
+                setTimeout(function() {
+                    //kembalinya dino lari
+                    document.getElementById('dino').setAttribute('class', '');   
+                document.getElementById('dino').style.marginTop = "170px";
+                }, 1000);
+            }
+       });
+    </script>
+</body>
+</html>
